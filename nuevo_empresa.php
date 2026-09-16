@@ -4,8 +4,8 @@ require_once 'conexion.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos = [
         'nombre_empresa' => $_POST['nombre_empresa'],
-        'telefono' => $_POST['telefono'],
-        'email' => $_POST['email'],
+        'telefono'       => $_POST['telefono'],
+        'email'          => $_POST['email'],
     ];
     consultarSupabase('Empresa', 'POST', $datos);
     header('Location: index.php');
