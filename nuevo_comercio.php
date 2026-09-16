@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'telefono' => $_POST['telefono'],
         'email' => $_POST['email'],
     ];
-    consultarSupabase('Comercio', 'POST', $datos);
+    consultarSupabase('comercio', 'POST', $datos);
     header('Location: index.php');
     exit;
 }
