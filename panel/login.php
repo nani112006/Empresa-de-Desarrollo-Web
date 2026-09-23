@@ -31,15 +31,15 @@
                     Iniciar Sesion
                 </button>
 
-</form>         
+            </form>         
 
             <a href="index.php" class="btn btn-secondary w-100 mt-2">
                 Volver
             </a>
-</div>
-</div>
-</div>
-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
