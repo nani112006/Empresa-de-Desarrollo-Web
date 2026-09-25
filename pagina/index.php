@@ -40,7 +40,9 @@ $empresas      = consultarSupabase("Empresa?select=*");
     </ul>
 
     <div class="tab-content bg-white border border-top-0 p-3 rounded-bottom shadow-sm">
-        
+        <a href="login.php" class="btn btn-dark">
+    Acceso administrador
+</a>
         <!-- Tabla Proyectos -->
         <div class="tab-pane fade show active" id="proyectos">
             <table class="table table-hover">
