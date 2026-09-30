@@ -1,9 +1,9 @@
 <?php
 function consultarSupabase($endpoint, $metodo = 'GET', $datos = null) {
     $project_ref = "lfxxzmufeikrboikbfuv";
-    $apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpcJ9UQ_RZ6Kkijf"; 
-
+    $apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpcJ9UQ_RZ6Kkijf"; // Tu API Key
     
+    // Construir la URL completa del recurso
     $url = "https://{$project_ref}.supabase.co/rest/v1/" . $endpoint;
 
     $ch = curl_init();
@@ -19,24 +19,17 @@ function consultarSupabase($endpoint, $metodo = 'GET', $datos = null) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-    
-    $metodoUpper = strtoupper($metodo);
-    if ($metodoUpper === 'POST') {
+    // Si la petición es POST (para guardar datos)
+    if (strtoupper($metodo) === 'POST') {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datos));
-    } else {
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $metodoUpper);
     }
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    
-    if ($httpCode >= 400) {
-        die("Error en Supabase (Código $httpCode): " . $response);
-    }
-
+    // Retorna la respuesta convertida en arreglo PHP
     return json_decode($response, true);
 }
 ?>
