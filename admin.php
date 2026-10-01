@@ -26,7 +26,6 @@ $empresas = consultarSupabase(
 );
 
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
