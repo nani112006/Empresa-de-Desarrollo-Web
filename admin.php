@@ -21,11 +21,8 @@ $comercios = consultarSupabase(
     "comercio?select=*"
 );
 
-$empresas = consultarSupabase(
-    "Empresa?select=*"
-);
-
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -33,39 +30,60 @@ $empresas = consultarSupabase(
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <title>Panel de Administración</title>
+    <title>Panel administrador</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
 </head>
 
-<body>
+<body class="bg-light">
 
-<div class="container mt-4">
+<nav class="navbar navbar-dark bg-dark">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="container">
 
-        <h1>Panel de Administración</h1>
+        <span class="navbar-brand">
+            Panel administrador
+        </span>
 
-        <a href="cerrar_sesion.php" class="btn btn-danger">
+        <a
+            href="cerrar_sesion.php"
+            class="btn btn-danger">
+
             Cerrar sesión
+
         </a>
 
     </div>
 
+</nav>
+
+
+<div class="container mt-5">
+
 
     <!-- PROYECTOS -->
 
-    <div class="card mb-4">
+    <div class="card shadow mb-5">
 
-        <div class="card-header d-flex justify-content-between">
+        <div class="card-header d-flex justify-content-between align-items-center">
 
-            <h3>Proyectos</h3>
+            <h3 class="mb-0">
+                Proyectos
+            </h3>
 
-            <a href="nuevo_proyecto.php" class="btn btn-success">
-                Nuevo proyecto
+            <a
+                href="nuevo_proyecto.php"
+                class="btn btn-success">
+
+                + Nuevo proyecto
+
             </a>
 
         </div>
@@ -74,16 +92,20 @@ $empresas = consultarSupabase(
 
             <div class="table-responsive">
 
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
 
                     <thead>
 
                     <tr>
 
                         <th>ID</th>
+
                         <th>Proyecto</th>
+
                         <th>Programador</th>
+
                         <th>Estado</th>
+
                         <th>Acciones</th>
 
                     </tr>
@@ -92,52 +114,91 @@ $empresas = consultarSupabase(
 
                     <tbody>
 
-                    <?php foreach ($proyectos as $p): ?>
+                    <?php if (
+                        is_array($proyectos) &&
+                        count($proyectos) > 0
+                    ): ?>
+
+                        <?php foreach ($proyectos as $proyecto): ?>
+
+                            <tr>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $proyecto['id_proyecto'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $proyecto['nombre_proyecto'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+
+                                        ($proyecto['programador']['nombre'] ?? '') .
+                                        ' ' .
+                                        ($proyecto['programador']['apellido'] ?? '')
+
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $proyecto['estado'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="editar_proyecto.php?id=<?= urlencode($proyecto['id_proyecto'] ?? '') ?>"
+                                        class="btn btn-warning btn-sm">
+
+                                        Editar
+
+                                    </a>
+
+                                    <a
+                                        href="eliminar_proyecto.php?id=<?= urlencode($proyecto['id_proyecto'] ?? '') ?>"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Seguro que querés eliminar este proyecto?');">
+
+                                        Eliminar
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
 
                         <tr>
 
-                            <td>
-                                <?= htmlspecialchars($p['id_proyecto'] ?? '') ?>
-                            </td>
+                            <td
+                                colspan="5"
+                                class="text-center">
 
-                            <td>
-                                <?= htmlspecialchars($p['nombre_proyecto'] ?? '') ?>
-                            </td>
-
-                            <td>
-
-                                <?= htmlspecialchars(
-                                    ($p['programador']['nombre'] ?? '') .
-                                    ' ' .
-                                    ($p['programador']['apellido'] ?? '')
-                                ) ?>
-
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($p['estado'] ?? '') ?>
-                            </td>
-
-                            <td>
-
-                                <a
-                                    href="editar_proyecto.php?id=<?= $p['id_proyecto'] ?>"
-                                    class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
-                                <a
-                                    href="eliminar_proyecto.php?id=<?= $p['id_proyecto'] ?>"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que querés eliminar este proyecto?')">
-                                    Eliminar
-                                </a>
+                                No hay proyectos.
 
                             </td>
 
                         </tr>
 
-                    <?php endforeach; ?>
+                    <?php endif; ?>
 
                     </tbody>
 
@@ -152,14 +213,20 @@ $empresas = consultarSupabase(
 
     <!-- PROGRAMADORES -->
 
-    <div class="card mb-4">
+    <div class="card shadow mb-5">
 
-        <div class="card-header d-flex justify-content-between">
+        <div class="card-header d-flex justify-content-between align-items-center">
 
-            <h3>Programadores</h3>
+            <h3 class="mb-0">
+                Programadores
+            </h3>
 
-            <a href="nuevo_programador.php" class="btn btn-success">
-                Nuevo programador
+            <a
+                href="nuevo_programador.php"
+                class="btn btn-success">
+
+                + Nuevo programador
+
             </a>
 
         </div>
@@ -168,17 +235,20 @@ $empresas = consultarSupabase(
 
             <div class="table-responsive">
 
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
 
                     <thead>
 
                     <tr>
 
                         <th>ID</th>
+
                         <th>Nombre</th>
+
                         <th>Apellido</th>
-                        <th>Especialidad</th>
+
                         <th>Email</th>
+
                         <th>Acciones</th>
 
                     </tr>
@@ -187,61 +257,87 @@ $empresas = consultarSupabase(
 
                     <tbody>
 
-                    <?php foreach ($programadores as $pr): ?>
+                    <?php if (
+                        is_array($programadores) &&
+                        count($programadores) > 0
+                    ): ?>
+
+                        <?php foreach ($programadores as $programador): ?>
+
+                            <tr>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $programador['id_programador'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $programador['nombre'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $programador['apellido'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $programador['email'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="editar_programador.php?id=<?= urlencode($programador['id_programador'] ?? '') ?>"
+                                        class="btn btn-warning btn-sm">
+
+                                        Editar
+
+                                    </a>
+
+                                    <a
+                                        href="eliminar_programador.php?id=<?= urlencode($programador['id_programador'] ?? '') ?>"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Seguro que querés eliminar este programador?');">
+
+                                        Eliminar
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
 
                         <tr>
 
-                            <td>
-                                <?= htmlspecialchars(
-                                    $pr['id_Programador']
-                                    ?? $pr['id_programador']
-                                    ?? ''
-                                ) ?>
-                            </td>
+                            <td
+                                colspan="5"
+                                class="text-center">
 
-                            <td>
-                                <?= htmlspecialchars($pr['nombre'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($pr['apellido'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($pr['especialidad'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($pr['email'] ?? '') ?>
-                            </td>
-
-                            <td>
-
-                                <?php
-                                $idProgramador =
-                                    $pr['id_Programador']
-                                    ?? $pr['id_programador']
-                                    ?? '';
-                                ?>
-
-                                <a
-                                    href="editar_programador.php?id=<?= $idProgramador ?>"
-                                    class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
-                                <a
-                                    href="eliminar_programador.php?id=<?= $idProgramador ?>"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que querés eliminar este programador?')">
-                                    Eliminar
-                                </a>
+                                No hay programadores.
 
                             </td>
 
                         </tr>
 
-                    <?php endforeach; ?>
+                    <?php endif; ?>
 
                     </tbody>
 
@@ -254,16 +350,22 @@ $empresas = consultarSupabase(
     </div>
 
 
-    <!-- COMERCIOS -->
+    <!-- COMERCIO -->
 
-    <div class="card mb-4">
+    <div class="card shadow mb-5">
 
-        <div class="card-header d-flex justify-content-between">
+        <div class="card-header d-flex justify-content-between align-items-center">
 
-            <h3>Comercios</h3>
+            <h3 class="mb-0">
+                Comercio
+            </h3>
 
-            <a href="nuevo_comercio.php" class="btn btn-success">
-                Nuevo comercio
+            <a
+                href="nuevo_comercio.php"
+                class="btn btn-success">
+
+                + Nuevo comercio
+
             </a>
 
         </div>
@@ -272,16 +374,20 @@ $empresas = consultarSupabase(
 
             <div class="table-responsive">
 
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
 
                     <thead>
 
                     <tr>
 
                         <th>ID</th>
+
                         <th>Nombre</th>
+
+                        <th>Dirección</th>
+
                         <th>Teléfono</th>
-                        <th>Email</th>
+
                         <th>Acciones</th>
 
                     </tr>
@@ -290,134 +396,87 @@ $empresas = consultarSupabase(
 
                     <tbody>
 
-                    <?php foreach ($comercios as $c): ?>
+                    <?php if (
+                        is_array($comercios) &&
+                        count($comercios) > 0
+                    ): ?>
+
+                        <?php foreach ($comercios as $comercio): ?>
+
+                            <tr>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $comercio['id_comercio'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $comercio['nombre'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $comercio['direccion'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+                                        $comercio['telefono'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="editar_comercio.php?id=<?= urlencode($comercio['id_comercio'] ?? '') ?>"
+                                        class="btn btn-warning btn-sm">
+
+                                        Editar
+
+                                    </a>
+
+                                    <a
+                                        href="eliminar_comercio.php?id=<?= urlencode($comercio['id_comercio'] ?? '') ?>"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Seguro que querés eliminar este comercio?');">
+
+                                        Eliminar
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
 
                         <tr>
 
-                            <td>
-                                <?= htmlspecialchars($c['id_comercio'] ?? '') ?>
-                            </td>
+                            <td
+                                colspan="5"
+                                class="text-center">
 
-                            <td>
-                                <?= htmlspecialchars($c['nombre_comercio'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($c['telefono'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($c['email'] ?? '') ?>
-                            </td>
-
-                            <td>
-
-                                <a
-                                    href="editar_comercio.php?id=<?= $c['id_comercio'] ?>"
-                                    class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
-                                <a
-                                    href="eliminar_comercio.php?id=<?= $c['id_comercio'] ?>"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que querés eliminar este comercio?')">
-                                    Eliminar
-                                </a>
+                                No hay comercios.
 
                             </td>
 
                         </tr>
 
-                    <?php endforeach; ?>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- EMPRESAS -->
-
-    <div class="card mb-4">
-
-        <div class="card-header d-flex justify-content-between">
-
-            <h3>Empresas</h3>
-
-            <a href="nuevo_empresa.php" class="btn btn-success">
-                Nueva empresa
-            </a>
-
-        </div>
-
-        <div class="card-body">
-
-            <div class="table-responsive">
-
-                <table class="table table-striped">
-
-                    <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-                        <th>Empresa</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Acciones</th>
-
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    <?php foreach ($empresas as $e): ?>
-
-                        <tr>
-
-                            <td>
-                                <?= htmlspecialchars($e['id_empresa'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($e['nombre_empresa'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($e['telefono'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($e['email'] ?? '') ?>
-                            </td>
-
-                            <td>
-
-                                <a
-                                    href="editar_empresa.php?id=<?= $e['id_empresa'] ?>"
-                                    class="btn btn-warning btn-sm">
-                                    Editar
-                                </a>
-
-                                <a
-                                    href="eliminar_empresa.php?id=<?= $e['id_empresa'] ?>"
-                                    class="btn btn-danger btn-sm"
-                                    onclick="return confirm('¿Seguro que querés eliminar esta empresa?')">
-                                    Eliminar
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                    <?php endforeach; ?>
+                    <?php endif; ?>
 
                     </tbody>
 
@@ -432,4 +491,5 @@ $empresas = consultarSupabase(
 </div>
 
 </body>
+
 </html>

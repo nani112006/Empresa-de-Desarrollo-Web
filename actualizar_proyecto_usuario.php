@@ -2,19 +2,25 @@
 
 session_start();
 
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login_usuario.php");
     exit;
 }
 
 require_once 'conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: admin.php");
+    header("Location: usuario.php");
     exit;
 }
 
-$id = $_POST['id_proyecto'] ?? null;
+$idUsuario = $_SESSION['usuario']['id'] ?? null;
+$idProyecto = $_POST['id_proyecto'] ?? null;
+
+if (!$idUsuario || !$idProyecto) {
+    header("Location: usuario.php");
+    exit;
+}
 
 $nombreProyecto = trim($_POST['nombre_proyecto'] ?? '');
 $descripcion = trim($_POST['descripcion'] ?? '');
@@ -33,14 +39,29 @@ $idProgramador = !empty($_POST['id_programador'])
     ? $_POST['id_programador']
     : null;
 
-if (!$id) {
-    header("Location: admin.php");
-    exit;
-}
-
 if ($nombreProyecto === '' || $estado === '') {
     die("El nombre del proyecto y el estado son obligatorios.");
 }
+
+/*
+ * Primero comprobamos que el proyecto
+ * pertenezca al usuario conectado
+ */
+
+$proyecto = consultarSupabase(
+    "Proyecto?id_proyecto=eq." . urlencode($idProyecto) .
+    "&id_usuario=eq." . urlencode($idUsuario) .
+    "&select=*"
+);
+
+if (!is_array($proyecto) || count($proyecto) === 0) {
+    die("No tenés permiso para modificar este proyecto.");
+}
+
+/*
+ * La conexión actual solamente permite
+ * GET y POST, por lo que no usamos PATCH acá.
+ */
 
 $datos = [
 
@@ -58,11 +79,17 @@ $datos = [
 
 ];
 
+/*
+ * Para actualizar en Supabase se necesita PATCH.
+ * Tu conexion.php actual no lo soporta.
+ */
+
 $project_ref = "lfxxzmufeikrboikbfuv";
-$apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpc9JQ_RZ6Kkijf";
+$apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpcJ9UQ_RZ6Kkijf";
 
 $url = "https://{$project_ref}.supabase.co/rest/v1/Proyecto"
-     . "?id_proyecto=eq." . urlencode($id);
+     . "?id_proyecto=eq." . urlencode($idProyecto)
+     . "&id_usuario=eq." . urlencode($idUsuario);
 
 $ch = curl_init();
 
@@ -103,7 +130,7 @@ curl_close($ch);
 
 if ($httpCode >= 200 && $httpCode < 300) {
 
-    header("Location: admin.php");
+    header("Location: usuario.php");
     exit;
 
 }

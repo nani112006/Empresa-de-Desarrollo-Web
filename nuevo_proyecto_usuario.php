@@ -2,8 +2,8 @@
 
 session_start();
 
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login_usuario.php");
     exit;
 }
 
@@ -41,7 +41,7 @@ $programadores = consultarSupabase(
         <div class="card-header bg-dark text-white">
 
             <h3 class="mb-0">
-                Nuevo proyecto
+                Crear nuevo proyecto
             </h3>
 
         </div>
@@ -49,7 +49,7 @@ $programadores = consultarSupabase(
         <div class="card-body">
 
             <form
-                action="registrar_proyecto.php"
+                action="registrar_proyecto_usuario.php"
                 method="POST">
 
                 <div class="mb-3">
@@ -154,24 +154,32 @@ $programadores = consultarSupabase(
                             Sin programador
                         </option>
 
-                        <?php if (is_array($programadores)): ?>
+                        <?php
 
-                            <?php foreach ($programadores as $programador): ?>
+                        if (is_array($programadores)):
 
-                                <option
-                                    value="<?= htmlspecialchars($programador['id_programador'] ?? '') ?>">
+                            foreach ($programadores as $programador):
 
-                                    <?= htmlspecialchars(
-                                        ($programador['nombre'] ?? '') .
-                                        ' ' .
-                                        ($programador['apellido'] ?? '')
-                                    ) ?>
+                        ?>
 
-                                </option>
+                            <option
+                                value="<?= htmlspecialchars($programador['id_programador'] ?? '') ?>">
 
-                            <?php endforeach; ?>
+                                <?= htmlspecialchars(
+                                    ($programador['nombre'] ?? '') .
+                                    ' ' .
+                                    ($programador['apellido'] ?? '')
+                                ) ?>
 
-                        <?php endif; ?>
+                            </option>
+
+                        <?php
+
+                            endforeach;
+
+                        endif;
+
+                        ?>
 
                     </select>
 

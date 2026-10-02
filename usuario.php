@@ -9,9 +9,18 @@ if (!isset($_SESSION['usuario'])) {
 
 require_once 'conexion.php';
 
-$proyectos = consultarSupabase(
-    "Proyecto?select=*,programador(nombre,apellido)"
-);
+$idUsuario = $_SESSION['usuario']['id'] ?? null;
+
+$proyectos = [];
+
+if ($idUsuario) {
+
+    $proyectos = consultarSupabase(
+        "Proyecto?id_usuario=eq." . urlencode($idUsuario) .
+        "&select=*,programador(nombre,apellido)"
+    );
+
+}
 
 ?>
 
@@ -22,7 +31,9 @@ $proyectos = consultarSupabase(
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Área de Usuario</title>
 
@@ -47,7 +58,9 @@ $proyectos = consultarSupabase(
             <span class="text-white me-3">
 
                 Hola,
-                <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>
+                <?= htmlspecialchars(
+                    $_SESSION['usuario']['nombre'] ?? ''
+                ) ?>
 
             </span>
 
@@ -68,16 +81,33 @@ $proyectos = consultarSupabase(
 
 <div class="container mt-5">
 
-    <div class="text-center mb-5">
+    <div class="text-center mb-4">
 
         <h1>
+
             Bienvenido,
-            <?= htmlspecialchars($_SESSION['usuario']['nombre']) ?>
+            <?= htmlspecialchars(
+                $_SESSION['usuario']['nombre'] ?? ''
+            ) ?>
+
         </h1>
 
         <p class="lead">
-            Estos son los proyectos disponibles.
+            Estos son tus proyectos.
         </p>
+
+    </div>
+
+
+    <div class="d-flex justify-content-end mb-3">
+
+        <a
+            href="nuevo_proyecto_usuario.php"
+            class="btn btn-success">
+
+            + Crear proyecto
+
+        </a>
 
     </div>
 
@@ -87,10 +117,11 @@ $proyectos = consultarSupabase(
         <div class="card-header">
 
             <h3 class="mb-0">
-                Proyectos
+                Mis proyectos
             </h3>
 
         </div>
+
 
         <div class="card-body">
 
@@ -106,48 +137,99 @@ $proyectos = consultarSupabase(
 
                         <th>Proyecto</th>
 
+                        <th>Descripción</th>
+
                         <th>Programador</th>
 
                         <th>Estado</th>
+
+                        <th>Acciones</th>
 
                     </tr>
 
                     </thead>
 
+
                     <tbody>
 
-                    <?php if (is_array($proyectos) && count($proyectos) > 0): ?>
+                    <?php if (
+                        is_array($proyectos) &&
+                        count($proyectos) > 0
+                    ): ?>
 
                         <?php foreach ($proyectos as $p): ?>
 
                             <tr>
 
                                 <td>
+
                                     <?= htmlspecialchars(
                                         $p['id_proyecto'] ?? ''
                                     ) ?>
+
                                 </td>
 
+
                                 <td>
+
                                     <?= htmlspecialchars(
                                         $p['nombre_proyecto'] ?? ''
                                     ) ?>
+
                                 </td>
+
 
                                 <td>
 
                                     <?= htmlspecialchars(
+                                        $p['descripcion'] ?? ''
+                                    ) ?>
+
+                                </td>
+
+
+                                <td>
+
+                                    <?= htmlspecialchars(
+
                                         ($p['programador']['nombre'] ?? '') .
                                         ' ' .
                                         ($p['programador']['apellido'] ?? '')
+
                                     ) ?>
 
                                 </td>
 
+
                                 <td>
+
                                     <?= htmlspecialchars(
                                         $p['estado'] ?? ''
                                     ) ?>
+
+                                </td>
+
+
+                                <td>
+
+                                    <a
+                                        href="editar_proyecto_usuario.php?id=<?= urlencode($p['id_proyecto'] ?? '') ?>"
+                                        class="btn btn-warning btn-sm">
+
+                                        Editar
+
+                                    </a>
+
+
+                                    <a
+                                        href="eliminar_proyecto_usuario.php?id=<?= urlencode($p['id_proyecto'] ?? '') ?>"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Seguro que querés eliminar este proyecto?');">
+
+                                        Eliminar
+
+                                    </a>
+
                                 </td>
 
                             </tr>
@@ -158,9 +240,11 @@ $proyectos = consultarSupabase(
 
                         <tr>
 
-                            <td colspan="4" class="text-center">
+                            <td
+                                colspan="6"
+                                class="text-center">
 
-                                No hay proyectos disponibles.
+                                Todavía no tenés proyectos.
 
                             </td>
 
@@ -181,4 +265,5 @@ $proyectos = consultarSupabase(
 </div>
 
 </body>
+
 </html>

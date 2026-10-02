@@ -1,16 +1,23 @@
 <?php
+
 session_start();
 
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login_usuario.php");
     exit;
 }
 
 require_once 'conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: nuevo_proyecto.php");
+    header("Location: usuario.php");
     exit;
+}
+
+$idUsuario = $_SESSION['usuario']['id'] ?? null;
+
+if (!$idUsuario) {
+    die("No se pudo identificar al usuario.");
 }
 
 $nombreProyecto = trim($_POST['nombre_proyecto'] ?? '');
@@ -33,13 +40,23 @@ $idProgramador = !empty($_POST['id_programador'])
 if ($nombreProyecto === '' || $estado === '') {
     die("El nombre del proyecto y el estado son obligatorios.");
 }
+
 $datos = [
+
     'nombre_proyecto' => $nombreProyecto,
+
     'descripcion' => $descripcion,
+
     'fecha_inicio' => $fechaInicio,
+
     'fecha_final' => $fechaFinal,
+
     'estado' => $estado,
-    'id_programador' => $idProgramador
+
+    'id_programador' => $idProgramador,
+
+    'id_usuario' => $idUsuario
+
 ];
 
 $resultado = consultarSupabase(
@@ -47,6 +64,8 @@ $resultado = consultarSupabase(
     'POST',
     $datos
 );
-header("Location: admin.php");
+
+header("Location: usuario.php");
 exit;
+
 ?>

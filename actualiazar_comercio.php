@@ -9,12 +9,35 @@ if (!isset($_SESSION['admin'])) {
 
 require_once 'conexion.php';
 
-$id = $_GET['id'] ?? null;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: admin.php");
+    exit;
+}
+
+$id = $_POST['id_comercio'] ?? null;
+
+$nombre = trim($_POST['nombre'] ?? '');
+$direccion = trim($_POST['direccion'] ?? '');
+$telefono = trim($_POST['telefono'] ?? '');
 
 if (!$id) {
     header("Location: admin.php");
     exit;
 }
+
+if ($nombre === '' || $direccion === '' || $telefono === '') {
+    die("Todos los campos son obligatorios.");
+}
+
+$datos = [
+
+    'nombre' => $nombre,
+
+    'direccion' => $direccion,
+
+    'telefono' => $telefono
+
+];
 
 $project_ref = "lfxxzmufeikrboikbfuv";
 $apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpc9JQ_RZ6Kkijf";
@@ -42,7 +65,13 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
+
+curl_setopt(
+    $ch,
+    CURLOPT_POSTFIELDS,
+    json_encode($datos)
+);
 
 $response = curl_exec($ch);
 
@@ -60,6 +89,6 @@ if ($httpCode >= 200 && $httpCode < 300) {
 
 }
 
-die("No se pudo eliminar el comercio.");
+die("No se pudo actualizar el comercio.");
 
 ?>

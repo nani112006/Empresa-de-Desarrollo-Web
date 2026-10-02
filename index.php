@@ -6,13 +6,11 @@
 
     <title>DevWeb</title>
 
-    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -26,11 +24,10 @@
             color: #0f172a;
         }
 
-        /* NAVBAR */
         .navbar-custom {
             background: white;
             border-bottom: 1px solid #e5e7eb;
-            height: 82px;
+            min-height: 82px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -88,6 +85,7 @@
 
         .btn-login:hover {
             background: #f1f5f9;
+            color: #0f172a;
         }
 
         .btn-register {
@@ -107,9 +105,9 @@
 
         .btn-admin:hover {
             background: #f1f5f9;
+            color: #0f172a;
         }
 
-        /* HERO */
         .hero {
             min-height: calc(100vh - 82px);
             display: flex;
@@ -162,39 +160,8 @@
             margin: 0 auto;
         }
 
-        .hero-line {
-            width: 100%;
-            height: 1px;
-            background: #e5e7eb;
-            margin: 65px 0 30px;
-        }
-
-        .admin-text {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-
-        .admin-access {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 11px 22px;
-            border-radius: 25px;
-            border: 1px solid #fbbf24;
-            color: #b45309;
-            background: #fffbeb;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .admin-access:hover {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
         @media (max-width: 768px) {
+
             .navbar-custom {
                 height: auto;
                 padding: 15px;
@@ -224,31 +191,39 @@
 
 <body>
 
-    <!-- NAVBAR -->
     <nav class="navbar-custom">
 
-        <!-- LOGO -->
         <a href="index.php" class="logo-container">
+
             <div class="logo">
                 &lt;/&gt;
             </div>
 
-            <span class="brand">DevWeb</span>
+            <span class="brand">
+                DevWeb
+            </span>
+
         </a>
 
-        <!-- SOLO LOS 3 ACCESOS SOLICITADOS -->
+
         <div class="nav-buttons">
 
-            <a href="login.php" class="nav-btn btn-login">
+            <!-- CREAR CUENTA -->
+            <a href="registro.php" class="nav-btn btn-register">
+                <i class="bi bi-person-plus"></i>
+                Crear cuenta
+            </a>
+
+
+            <!-- INICIAR SESIÓN USUARIO -->
+            <a href="login_usuario.php" class="nav-btn btn-login">
                 <i class="bi bi-box-arrow-in-right"></i>
                 Iniciar sesión
             </a>
 
-            <a href="registro.php" class="nav-btn btn-register">
-                Registrarse
-            </a>
 
-            <a href="login.php?admin=1" class="nav-btn btn-admin">
+            <!-- ACCESO ADMINISTRADOR -->
+            <a href="login.php" class="nav-btn btn-admin">
                 <i class="bi bi-shield-lock-fill"></i>
                 Acceso administrador
             </a>
@@ -258,27 +233,36 @@
     </nav>
 
 
-    <!-- HERO -->
     <main class="hero">
 
         <div class="hero-content">
 
             <div class="badge-platform">
+
                 <span class="badge-dot"></span>
+
                 Plataforma de Desarrollo Web
+
             </div>
 
+
             <h1>
+
                 Bienvenido a nuestra
+
                 <br>
+
                 <span>plataforma digital</span>
+
             </h1>
 
-            <p>
-                Empresa dedicada al desarrollo de proyectos y soluciones web
-                modernas, eficientes y con un diseño impecable.
-            </p>
 
+            <p>
+
+                Plataforma dedicada al desarrollo de proyectos y
+                soluciones web modernas, eficientes y funcionales
+
+            </p>
 
         </div>
 

@@ -9,18 +9,41 @@ if (!isset($_SESSION['admin'])) {
 
 require_once 'conexion.php';
 
-$id = $_GET['id'] ?? null;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: admin.php");
+    exit;
+}
+
+$id = $_POST['id_programador'] ?? null;
+
+$nombre = trim($_POST['nombre'] ?? '');
+$apellido = trim($_POST['apellido'] ?? '');
+$email = trim($_POST['email'] ?? '');
 
 if (!$id) {
     header("Location: admin.php");
     exit;
 }
 
+if ($nombre === '' || $apellido === '' || $email === '') {
+    die("Todos los campos son obligatorios.");
+}
+
+$datos = [
+
+    'nombre' => $nombre,
+
+    'apellido' => $apellido,
+
+    'email' => $email
+
+];
+
 $project_ref = "lfxxzmufeikrboikbfuv";
 $apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpc9JQ_RZ6Kkijf";
 
-$url = "https://{$project_ref}.supabase.co/rest/v1/comercio"
-     . "?id_comercio=eq." . urlencode($id);
+$url = "https://{$project_ref}.supabase.co/rest/v1/programador"
+     . "?id_programador=eq." . urlencode($id);
 
 $ch = curl_init();
 
@@ -42,7 +65,13 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
+
+curl_setopt(
+    $ch,
+    CURLOPT_POSTFIELDS,
+    json_encode($datos)
+);
 
 $response = curl_exec($ch);
 
@@ -60,6 +89,6 @@ if ($httpCode >= 200 && $httpCode < 300) {
 
 }
 
-die("No se pudo eliminar el comercio.");
+die("No se pudo actualizar el programador.");
 
 ?>

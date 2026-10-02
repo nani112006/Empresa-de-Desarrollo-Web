@@ -2,12 +2,9 @@
 
 session_start();
 
-$_SESSION = [];
-
-session_destroy();
+unset($_SESSION['admin']);
 
 header("Location: index.php");
 exit;
-
 
 ?>

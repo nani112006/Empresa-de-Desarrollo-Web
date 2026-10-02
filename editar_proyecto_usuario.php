@@ -2,12 +2,32 @@
 
 session_start();
 
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login_usuario.php");
     exit;
 }
 
 require_once 'conexion.php';
+
+$idUsuario = $_SESSION['usuario']['id'] ?? null;
+$idProyecto = $_GET['id'] ?? null;
+
+if (!$idUsuario || !$idProyecto) {
+    header("Location: usuario.php");
+    exit;
+}
+
+$proyectos = consultarSupabase(
+    "Proyecto?id_proyecto=eq." . urlencode($idProyecto) .
+    "&id_usuario=eq." . urlencode($idUsuario) .
+    "&select=*"
+);
+
+if (!is_array($proyectos) || count($proyectos) === 0) {
+    die("Proyecto no encontrado.");
+}
+
+$proyecto = $proyectos[0];
 
 $programadores = consultarSupabase(
     "programador?select=*"
@@ -22,9 +42,11 @@ $programadores = consultarSupabase(
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <title>Nuevo proyecto</title>
+    <title>Editar proyecto</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -41,7 +63,7 @@ $programadores = consultarSupabase(
         <div class="card-header bg-dark text-white">
 
             <h3 class="mb-0">
-                Nuevo proyecto
+                Editar proyecto
             </h3>
 
         </div>
@@ -49,8 +71,13 @@ $programadores = consultarSupabase(
         <div class="card-body">
 
             <form
-                action="registrar_proyecto.php"
+                action="actualizar_proyecto_usuario.php"
                 method="POST">
+
+                <input
+                    type="hidden"
+                    name="id_proyecto"
+                    value="<?= htmlspecialchars($proyecto['id_proyecto'] ?? '') ?>">
 
                 <div class="mb-3">
 
@@ -62,6 +89,7 @@ $programadores = consultarSupabase(
                         type="text"
                         name="nombre_proyecto"
                         class="form-control"
+                        value="<?= htmlspecialchars($proyecto['nombre_proyecto'] ?? '') ?>"
                         required>
 
                 </div>
@@ -75,7 +103,7 @@ $programadores = consultarSupabase(
                     <textarea
                         name="descripcion"
                         class="form-control"
-                        rows="4"></textarea>
+                        rows="4"><?= htmlspecialchars($proyecto['descripcion'] ?? '') ?></textarea>
 
                 </div>
 
@@ -90,7 +118,8 @@ $programadores = consultarSupabase(
                         <input
                             type="date"
                             name="fecha_inicio"
-                            class="form-control">
+                            class="form-control"
+                            value="<?= htmlspecialchars($proyecto['fecha_inicio'] ?? '') ?>">
 
                     </div>
 
@@ -103,7 +132,8 @@ $programadores = consultarSupabase(
                         <input
                             type="date"
                             name="fecha_final"
-                            class="form-control">
+                            class="form-control"
+                            value="<?= htmlspecialchars($proyecto['fecha_final'] ?? '') ?>">
 
                     </div>
 
@@ -120,20 +150,28 @@ $programadores = consultarSupabase(
                         class="form-select"
                         required>
 
-                        <option value="">
-                            Seleccionar estado
-                        </option>
+                        <option
+                            value="Pendiente"
+                            <?= ($proyecto['estado'] ?? '') === 'Pendiente' ? 'selected' : '' ?>>
 
-                        <option value="Pendiente">
                             Pendiente
+
                         </option>
 
-                        <option value="En Proceso">
+                        <option
+                            value="En Proceso"
+                            <?= ($proyecto['estado'] ?? '') === 'En Proceso' ? 'selected' : '' ?>>
+
                             En Proceso
+
                         </option>
 
-                        <option value="Finalizado">
+                        <option
+                            value="Finalizado"
+                            <?= ($proyecto['estado'] ?? '') === 'Finalizado' ? 'selected' : '' ?>>
+
                             Finalizado
+
                         </option>
 
                     </select>
@@ -159,7 +197,8 @@ $programadores = consultarSupabase(
                             <?php foreach ($programadores as $programador): ?>
 
                                 <option
-                                    value="<?= htmlspecialchars($programador['id_programador'] ?? '') ?>">
+                                    value="<?= htmlspecialchars($programador['id_programador'] ?? '') ?>"
+                                    <?= ($proyecto['id_programador'] ?? '') == ($programador['id_programador'] ?? '') ? 'selected' : '' ?>>
 
                                     <?= htmlspecialchars(
                                         ($programador['nombre'] ?? '') .
@@ -181,9 +220,9 @@ $programadores = consultarSupabase(
 
                     <button
                         type="submit"
-                        class="btn btn-success">
+                        class="btn btn-primary">
 
-                        Crear proyecto
+                        Guardar cambios
 
                     </button>
 
