@@ -25,48 +25,32 @@ $comercios = consultarSupabase(
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
-
     <title>Panel administrador</title>
-
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
-
 </head>
-
 <body class="bg-light">
-
 <nav class="navbar navbar-dark bg-dark">
-
     <div class="container">
-
         <span class="navbar-brand">
             Panel administrador
         </span>
-
         <a
             href="cerrar_sesion.php"
             class="btn btn-danger">
-
             Cerrar sesión
 
         </a>
-
     </div>
-
 </nav>
 
-
 <div class="container mt-5">
-
 
     <!-- PROYECTOS -->
 
@@ -142,74 +126,48 @@ $comercios = consultarSupabase(
                                 <td>
 
                                     <?= htmlspecialchars(
-
                                         ($proyecto['programador']['nombre'] ?? '') .
                                         ' ' .
                                         ($proyecto['programador']['apellido'] ?? '')
 
                                     ) ?>
-
                                 </td>
-
                                 <td>
-
                                     <?= htmlspecialchars(
                                         $proyecto['estado'] ?? ''
                                     ) ?>
 
                                 </td>
-
                                 <td>
-
-                                    <a
-                                        href="editar_proyecto.php?id=<?= urlencode($proyecto['id_proyecto'] ?? '') ?>"
-                                        class="btn btn-warning btn-sm">
-
+                                    <a href="editar_proyecto_admin.php?id=<?= urlencode((string)($proyecto['id_proyecto'] ?? '')) ?>"
+                                    class="btn btn-warning">
                                         Editar
-
                                     </a>
 
-                                    <a
-                                        href="eliminar_proyecto.php?id=<?= urlencode($proyecto['id_proyecto'] ?? '') ?>"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('¿Seguro que querés eliminar este proyecto?');">
-
+                                    <a href="eliminar_proyecto.php?id=<?= urlencode((string)($proyecto['id_proyecto'] ?? '')) ?>"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('¿Seguro que querés eliminar este proyecto?');">
                                         Eliminar
-
                                     </a>
-
                                 </td>
-
                             </tr>
-
                         <?php endforeach; ?>
-
                     <?php else: ?>
-
                         <tr>
-
                             <td
                                 colspan="5"
                                 class="text-center">
-
                                 No hay proyectos.
-
                             </td>
-
                         </tr>
 
                     <?php endif; ?>
 
                     </tbody>
-
                 </table>
-
             </div>
-
         </div>
-
     </div>
-
 
     <!-- PROGRAMADORES -->
 
@@ -220,41 +178,25 @@ $comercios = consultarSupabase(
             <h3 class="mb-0">
                 Programadores
             </h3>
-
             <a
                 href="nuevo_programador.php"
                 class="btn btn-success">
-
                 + Nuevo programador
-
             </a>
-
         </div>
-
         <div class="card-body">
-
             <div class="table-responsive">
-
                 <table class="table table-striped table-hover">
-
                     <thead>
 
                     <tr>
-
                         <th>ID</th>
-
                         <th>Nombre</th>
-
                         <th>Apellido</th>
-
                         <th>Email</th>
-
                         <th>Acciones</th>
-
                     </tr>
-
                     </thead>
-
                     <tbody>
 
                     <?php if (
@@ -263,27 +205,18 @@ $comercios = consultarSupabase(
                     ): ?>
 
                         <?php foreach ($programadores as $programador): ?>
-
                             <tr>
-
                                 <td>
-
                                     <?= htmlspecialchars(
                                         $programador['id_programador'] ?? ''
                                     ) ?>
-
                                 </td>
-
                                 <td>
-
                                     <?= htmlspecialchars(
                                         $programador['nombre'] ?? ''
                                     ) ?>
-
                                 </td>
-
                                 <td>
-
                                     <?= htmlspecialchars(
                                         $programador['apellido'] ?? ''
                                     ) ?>
@@ -297,103 +230,61 @@ $comercios = consultarSupabase(
                                     ) ?>
 
                                 </td>
-
-                                <td>
-
-                                    <a
-                                        href="editar_programador.php?id=<?= urlencode($programador['id_programador'] ?? '') ?>"
-                                        class="btn btn-warning btn-sm">
-
+                                <td>                   
+                                    
+                                    <a href="editar_programador.php?id=<?= urlencode((string)($programador['id_Programador'] ?? '')) ?>"
+                                    class="btn btn-warning">
                                         Editar
-
                                     </a>
-
                                     <a
-                                        href="eliminar_programador.php?id=<?= urlencode($programador['id_programador'] ?? '') ?>"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('¿Seguro que querés eliminar este programador?');">
-
-                                        Eliminar
-
-                                    </a>
-
+                                    href="eliminar_programador.php?id=<?= urlencode((string)($programador['id_Programador'] ?? '')) ?>"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('¿Seguro que querés eliminar este programador?');">
+                                    Eliminar
+                                </a>
                                 </td>
-
                             </tr>
-
                         <?php endforeach; ?>
-
                     <?php else: ?>
-
                         <tr>
-
                             <td
                                 colspan="5"
                                 class="text-center">
-
                                 No hay programadores.
-
                             </td>
-
                         </tr>
-
                     <?php endif; ?>
-
                     </tbody>
-
                 </table>
-
             </div>
-
         </div>
-
     </div>
-
 
     <!-- COMERCIO -->
 
     <div class="card shadow mb-5">
-
         <div class="card-header d-flex justify-content-between align-items-center">
-
             <h3 class="mb-0">
                 Comercio
             </h3>
-
             <a
                 href="nuevo_comercio.php"
                 class="btn btn-success">
-
                 + Nuevo comercio
-
             </a>
-
         </div>
-
         <div class="card-body">
-
             <div class="table-responsive">
-
                 <table class="table table-striped table-hover">
-
                     <thead>
-
                     <tr>
-
                         <th>ID</th>
-
                         <th>Nombre</th>
-
                         <th>Dirección</th>
-
                         <th>Teléfono</th>
-
                         <th>Acciones</th>
-
                     </tr>
-
                     </thead>
-
                     <tbody>
 
                     <?php if (

@@ -163,7 +163,7 @@ $programadores = consultarSupabase(
                         ?>
 
                             <option
-                                value="<?= htmlspecialchars($programador['id_programador'] ?? '') ?>">
+                                value="<?= htmlspecialchars($programador['id_Programador'] ?? '') ?>">
 
                                 <?= htmlspecialchars(
                                     ($programador['nombre'] ?? '') .
