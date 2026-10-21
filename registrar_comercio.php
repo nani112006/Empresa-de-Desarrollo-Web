@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 if (!isset($_SESSION['admin'])) {
@@ -23,13 +22,9 @@ if ($nombre === '' || $direccion === '' || $telefono === '') {
 }
 
 $datos = [
-
     'nombre' => $nombre,
-
     'direccion' => $direccion,
-
     'telefono' => $telefono
-
 ];
 
 $resultado = consultarSupabase(

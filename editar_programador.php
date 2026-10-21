@@ -84,7 +84,6 @@ $programador = $programadores[0];
                     </div>
 
                 <div class="mb-4">
-
                     <label class="form-label">
                         Email
                     </label>
@@ -97,9 +96,7 @@ $programador = $programadores[0];
                         required>
 
                 </div>
-
                 <div class="d-flex gap-2">
-
                     <button
                         type="submit"
                         class="btn btn-primary">
@@ -107,26 +104,16 @@ $programador = $programadores[0];
                         Guardar cambios
 
                     </button>
-
                     <button
                         type="button"
                         class="btn btn-secondary"
                         onclick="history.back()">
-
                         Cancelar
-
                     </button>
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
-
 </div>
-
 </body>
-
 </html>

@@ -17,7 +17,7 @@ if (!$id) {
 }
 
 $project_ref = "lfxxzmufeikrboikbfuv";
-$apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpc9JQ_RZ6Kkijf";
+$apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpcJ9UQ_RZ6Kkijf";
 
 $url = "https://{$project_ref}.supabase.co/rest/v1/comercio"
      . "?id_comercio=eq." . urlencode($id);
@@ -27,11 +27,8 @@ $ch = curl_init();
 $headers = [
 
     "apikey: {$apiKey}",
-
     "Authorization: Bearer {$apiKey}",
-
     "Content-Type: application/json",
-
     "Prefer: return=representation"
 
 ];
