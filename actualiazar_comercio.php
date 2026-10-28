@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -39,7 +38,7 @@ $project_ref = "lfxxzmufeikrboikbfuv";
 $apiKey = "sb_publishable_PBpZSvDoTFT2CYKtpcJ9UQ_RZ6Kkijf";
 
 $url = "https://{$project_ref}.supabase.co/rest/v1/comercio"
-     . "?id_Comercio=eq." . urlencode((string)$id);
+     . "?id_comercio=eq." . urlencode((string)$id);
 
 $ch = curl_init();
 

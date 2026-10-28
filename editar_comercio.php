@@ -17,7 +17,7 @@ if (!$id) {
 }
 
 $comercios = consultarSupabase(
-    "comercio?id_Comercio=eq." .
+    "comercio?id_comercio=eq." .
     urlencode((string)$id) .
     "&select=*"
 );
@@ -57,7 +57,7 @@ $comercio = $comercios[0];
                 <input
                     type="hidden"
                     name="id_comercio"
-                    value="<?= htmlspecialchars((string)($comercio['id_Comercio'] ?? '')) ?>">
+                    value="<?= htmlspecialchars((string)($comercio['id_comercio'] ?? '')) ?>">
 
                 <div class="mb-3">
                     <label class="form-label">
