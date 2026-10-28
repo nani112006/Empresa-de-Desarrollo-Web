@@ -1,3 +1,4 @@
+
 <?php
 
 session_start();
@@ -14,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$id = $_POST['id_comercio'] ?? null;
+$id = $_POST['id_comercio'] ?? '';
 
 $nombre = trim($_POST['nombre'] ?? '');
 $direccion = trim($_POST['direccion'] ?? '');
@@ -29,11 +30,9 @@ if ($nombre === '' || $direccion === '' || $telefono === '') {
 }
 
 $datos = [
-
     'nombre' => $nombre,
     'direccion' => $direccion,
     'telefono' => $telefono
-
 ];
 
 $project_ref = "lfxxzmufeikrboikbfuv";
@@ -45,7 +44,6 @@ $url = "https://{$project_ref}.supabase.co/rest/v1/comercio"
 $ch = curl_init();
 
 $headers = [
-
     "apikey: {$apiKey}",
     "Authorization: Bearer {$apiKey}",
     "Content-Type: application/json",
@@ -56,26 +54,28 @@ curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datos)
-);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($datos));
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$errorcurl = curl_error($ch);
+$errorCurl = curl_error($ch);
 
 curl_close($ch);
 
-if ($response !== false && $httpCode < 200 && $httpCode >= 300) {
-    header("Location: admin.php");
-    exit;
-
+if ($response === false) {
+    die("Error de conexión: " . htmlspecialchars($errorCurl));
 }
 
-echo "<h3>No se puede actualizar el comercio.</h3>";
-echo "<p>Codigo HTTP: " . (int)$httpCode . "</p>";
+if ($httpCode >= 200 && $httpCode < 300) {
+    header("Location: admin.php");
+    exit;
+}
+
+echo "<h3>No se pudo actualizar el comercio.</h3>";
+echo "<p>Código HTTP: " . (int)$httpCode . "</p>";
 echo "<pre>";
-echo htmlspecialchars($errorCurl ?: ($response ?: "Error de conexion con Supabase"));
+echo htmlspecialchars($response ?: "Supabase no devolvió detalles del error.");
 echo "</pre>";
-echo "<a href='admin.php'> Volver al administrador </a>";
+echo "<a href='admin.php'>Volver al administrador</a>";
 
 ?>

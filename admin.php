@@ -144,7 +144,8 @@ $comercios = consultarSupabase(
                                         'Fecha de inicio' => $proyecto['fecha_inicio'] ?? '',
                                         'Fecha final' => $proyecto['fecha_final'] ?? ''
                                     ], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>">Ver</button>
-                                    <button type="button" class="btn btn-warning btn-sm" data-form-url="editar_proyecto_admin.php?id=<?= urlencode((string)($proyecto['id_proyecto'] ?? '')) ?>" data-modal-title="Editar proyecto">Editar</button>
+                                    <button type="button" class="btn btn-warning btn-sm" data-form-url="editar_proyecto_admin.php?id=<?= 
+                                    urlencode((string)($proyecto['id_proyecto'] ?? '')) ?>" data-modal-title="Editar proyecto">Editar</button>
 
                                     <a href="eliminar_proyecto.php?id=<?= urlencode((string)($proyecto['id_proyecto'] ?? '')) ?>"
                                     class="btn btn-danger"

@@ -7,6 +7,36 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
+require_once 'conexion.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: admin.php");
+    exit;
+}
+
+$nombre = trim($_POST['nombre'] ?? '');
+$apellido = trim($_POST['apellido'] ?? '');
+$email = trim($_POST['email'] ?? '');
+
+if ($nombre === '' || $apellido === '' || $email === '') {
+    die("Todos los campos son obligatorios.");
+}
+
+$datos = [
+    'nombre' => $nombre,
+    'apellido' => $apellido,
+    'email' => $email
+];
+
+$resultado = consultarSupabase('programador', 'POST', $datos);
+
+if (!is_array($resultado)) {
+    die("No se pudo registrar el programador. Revisá la conexión con Supabase.");
+}
+
+header("Location: admin.php");
+exit;
+
 ?>
 
 <!DOCTYPE html>

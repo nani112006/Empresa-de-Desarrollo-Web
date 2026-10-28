@@ -10,22 +10,17 @@ if (!isset($_SESSION['admin'])) {
 require_once 'conexion.php';
 
 $programadores = consultarSupabase(
-    "programador?select=*"
+    "programador?select=id_Programador,nombre,apellido"
 );
 
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Nuevo proyecto</title>
-
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
@@ -115,10 +110,7 @@ $programadores = consultarSupabase(
                         Estado
                     </label>
 
-                    <select
-                        name="estado"
-                        class="form-select"
-                        required>
+                    <select name="estado"class="form-select" required>
 
                         <option value="">
                             Seleccionar estado
@@ -142,37 +134,34 @@ $programadores = consultarSupabase(
 
                 <div class="mb-4">
 
-                    <label class="form-label">
+                    <label for="id_programador" class="form-label">
                         Programador
                     </label>
 
                     <select
                         name="id_programador"
-                        class="form-select">
-
-                        <option value="">
-                            Sin programador
+                        id="id_programador"
+                        class="form-select"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            Seleccionar programador
                         </option>
 
                         <?php if (is_array($programadores)): ?>
-
                             <?php foreach ($programadores as $programador): ?>
-
                                 <option
-                                    value="<?= htmlspecialchars($programador['id_programador'] ?? '') ?>">
-
+                                    value="<?= htmlspecialchars(
+                                        (string)($programador['id_Programador'] ?? '')
+                                    ) ?>"
+                                >
                                     <?= htmlspecialchars(
-                                        ($programador['nombre'] ?? '') .
-                                        ' ' .
+                                        ($programador['nombre'] ?? '') . ' ' .
                                         ($programador['apellido'] ?? '')
                                     ) ?>
-
                                 </option>
-
                             <?php endforeach; ?>
-
                         <?php endif; ?>
-
                     </select>
 
                 </div>
