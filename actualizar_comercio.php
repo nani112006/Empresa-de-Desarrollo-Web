@@ -1,3 +1,4 @@
+
 <?php
 
 session_start();
@@ -16,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $id = $_POST['id_comercio'] ?? '';
 
-$nombre = trim($_POST['nombre'] ?? '');
+$nombre_comercio = trim($_POST['nombre_comercio'] ?? '');
 $direccion = trim($_POST['direccion'] ?? '');
 $telefono = trim($_POST['telefono'] ?? '');
 
@@ -24,12 +25,12 @@ if ($id === '' || !ctype_digit((string)$id)) {
     die("El ID del comercio no es válido.");
 }
 
-if ($nombre === '' || $direccion === '' || $telefono === '') {
+if ($nombre_comercio === '' || $direccion === '' || $telefono === '') {
     die("Todos los campos son obligatorios.");
 }
 
 $datos = [
-    'nombre' => $nombre,
+    'nombre_comercio' => $nombre_comercio,
     'direccion' => $direccion,
     'telefono' => $telefono
 ];
@@ -66,14 +67,21 @@ if ($response === false) {
 }
 
 if ($httpCode >= 200 && $httpCode < 300) {
-    header("Location: admin.php");
-    exit;
+
+    $resultado = json_decode($response, true);
+
+    if (is_array($resultado) && count($resultado) > 0) {
+        header("Location: admin.php");
+        exit;
+    }
+
+    die("La solicitud se realizó, pero no se modificó ningún comercio. Verificá el ID y los permisos de Supabase.");
 }
 
 echo "<h3>No se pudo actualizar el comercio.</h3>";
 echo "<p>Código HTTP: " . (int)$httpCode . "</p>";
 echo "<pre>";
-echo htmlspecialchars($response ?: "Supabase no devolvió detalles del error.");
+echo htmlspecialchars($response ?: "Error de conexión con Supabase");
 echo "</pre>";
 echo "<a href='admin.php'>Volver al administrador</a>";
 

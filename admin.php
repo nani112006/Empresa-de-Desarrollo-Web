@@ -296,14 +296,13 @@ $comercios = consultarSupabase(
                             <tr>
                                 <td>
                                     <?= htmlspecialchars(
-                                        $comercio['id_comercio'] ?? ''
-                                    ) ?>
+                                        $comercio['id_comercio']                                    ) ?>
 
                                 </td>
                                 <td>
 
                                     <?= htmlspecialchars(
-                                        $comercio['nombre'] ?? ''
+                                        $comercio['nombre_comercio']
                                     ) ?>
 
                                 </td>
@@ -328,7 +327,7 @@ $comercios = consultarSupabase(
 
                                     <button type="button" class="btn btn-info btn-sm" data-record-type="comercio" data-view-record="<?= htmlspecialchars(json_encode([
                                         'ID' => $comercio['id_comercio'] ?? '',
-                                        'Nombre' => $comercio['nombre'] ?? '',
+                                        'Nombre' => $comercio['nombre_comercio'] ?? '',
                                         'Dirección' => $comercio['direccion'] ?? '',
                                         'Teléfono' => $comercio['telefono'] ?? ''
                                     ], JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>">Ver</button>

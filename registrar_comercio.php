@@ -23,7 +23,7 @@ if ($nombre === '' || $direccion === '' || $telefono === '') {
 }
 
 $datos = [
-    'nombre' => $nombre,
+    'nombre_comercio' => $nombre,
     'direccion' => $direccion,
     'telefono' => $telefono
 ];
