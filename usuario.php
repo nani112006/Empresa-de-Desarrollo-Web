@@ -1,19 +1,12 @@
-
 <?php
-
 session_start();
-
 if (!isset($_SESSION['usuario'])) {
     header("Location: login_usuario.php");
     exit;
 }
-
 require_once 'conexion.php';
-
 $idUsuario = $_SESSION['usuario']['id'] ?? null;
-
 $proyectos = [];
-
 if ($idUsuario) {
     $resultado = consultarSupabase(
         "Proyecto?id_usuario=eq." . urlencode((string)$idUsuario) .
